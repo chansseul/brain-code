@@ -326,14 +326,14 @@
                 </div>
                 <div class="avatar-item" data-src="img/raccoon.png">
                     <div class="avatar-img-wrap">
-                        <img src="img/raccoon.png" alt="라쿤" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <img src="img/raccoon.png" alt="라쿤" onerror="handleOnError(this)">
                         <span class="avatar-emoji" style="display:none">🦝</span>
                     </div>
                     <span class="avatar-name">라쿤</span>
                 </div>
                 <div class="avatar-item" data-src="img/bear.png">
                     <div class="avatar-img-wrap">
-                        <img src="img/bear.png" alt="곰" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <img src="img/bear.png" alt="곰" onerror="handleOnError(this)">
                         <span class="avatar-emoji" style="display:none">🐻</span>
                     </div>
                     <span class="avatar-name">곰</span>
@@ -350,6 +350,12 @@
     </div>
 
     <script>
+
+        const handleOnError = (element) => {
+            element.style.display = 'none';
+            element.nextElementSibling.style.display = 'block';
+        }
+
         let selectedAvatar = null;
 
         document.querySelectorAll('.avatar-item').forEach(item => {

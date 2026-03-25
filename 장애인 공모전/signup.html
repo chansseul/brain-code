@@ -317,7 +317,7 @@
                 </div>
                 <div class="check-row" id="matchCheck">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                    비밀번호가 일치합니다
+                    <span id="passwordCheckMsg"></span>
                 </div>
             </div>
 
@@ -500,6 +500,7 @@
         function checkMatch() {
             const pw   = document.getElementById("passwordInput").value;
             const conf = document.getElementById("passwordConfirm").value;
+            document.getElementById("passwordCheckMsg").innerText = conf.length && pw === conf ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'
             document.getElementById("matchCheck").classList.toggle('ok', conf.length > 0 && pw === conf);
         }
 
