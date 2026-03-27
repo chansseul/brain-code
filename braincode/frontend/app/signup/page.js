@@ -26,7 +26,7 @@ export default function SignupPage() {
     if (pw.length < 6) return showAlert('비밀번호는 6자 이상이어야 해요!')
 
     showAlert('회원가입 완료!', 'success')
-    setTimeout(() => { router.push('/login') }, 1000)
+    setTimeout(() => { router.push('/kid') }, 1000)
   }
 
   return (
