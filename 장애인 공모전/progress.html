@@ -924,7 +924,6 @@
                 <span class="topbar-profile-name">이름</span>
                 <span class="topbar-profile-birth">생일</span>
             </span>
-            <span class="topbar-divider">—</span>
             의
         </div>
         <button class="settings-btn" onclick="openSettingsModal()">⚙️ 설정</button>
@@ -973,7 +972,7 @@
                 <div class="wave-line"></div>
             </div>
             <div class="sidebar-item" onclick="selectArea(this, '후두엽')">
-                <span class="sidebar-icon">👁️</span>
+                <span class="sidebar-icon">🌈</span>
                 <span class="sidebar-text">후두엽</span>
             </div>
         </aside>
@@ -984,8 +983,8 @@
             <!-- HERO BANNER -->
             <div class="hero-banner">
                 <div class="hero-banner-left">
-                    <h2 id="area-title">전두엽에서는 연속훈련 D+7</h2>
-                    <p>꾸준히 훈련 중이에요! 오늘도 화이팅 🎉</p>
+                    <h2 id="area-title">전두엽</h2>
+                    <p id="area-desc">인지·집중 훈련 영역 · 연속훈련 🔥 D+7</p>
                 </div>
                 <div class="hero-streak">
                     <span class="streak-num">🔥 7</span>
@@ -996,34 +995,19 @@
             <!-- STATS SECTION -->
             <div class="section-title">📊 플레이 통계</div>
 
-            <!-- TRAINING INFO -->
-            <div class="training-info">
-                <div class="training-left">
-                    <div class="training-icon">🧠</div>
-                    <div>
-                        <div class="training-name" id="training-area">전두엽</div>
-                        <div class="training-desc">인지·집중 훈련 영역</div>
-                    </div>
-                </div>
-                <div class="training-badge" id="training-badge">연속훈련 D+7</div>
-            </div>
-
             <!-- STAT CARDS -->
             <div class="stats-grid">
                 <div class="stat-card blue">
                     <span class="stat-tag blue">완료 플레이</span>
                     <div class="stat-value" id="stat-complete">42<span>H</span></div>
-                    <div class="stat-label">총 완료 횟수</div>
                 </div>
                 <div class="stat-card green">
                     <span class="stat-tag green">도전</span>
                     <div class="stat-value" id="stat-challenge">18<span>H</span></div>
-                    <div class="stat-label">도전 시도 횟수</div>
                 </div>
                 <div class="stat-card orange">
                     <span class="stat-tag orange">플레이</span>
                     <div class="stat-value" id="stat-play">60<span>회</span></div>
-                    <div class="stat-label">전체 플레이 횟수</div>
                 </div>
             </div>
 
@@ -1056,12 +1040,19 @@
                 <!-- 이번 vs 지번 비교 -->
                 <div class="insight-card">
                     <span class="insight-tag compare">이번 vs 지번</span>
-                    <div class="insight-area">성장 비교</div>
-                    <div class="compare-num">약 1.5배</div>
-                    <div class="compare-sub">이번 주가 지난주보다 나아짐</div>
-                    <div class="insight-desc" style="margin-top: 10px;">
-                        지난주 <strong>40점</strong> → 이번주 <strong>60점</strong> 📈
+                    <div class="insight-area">점수 비교</div>
+                    <div style="display:flex; align-items:center; gap:10px; margin:6px 0;">
+                        <div style="text-align:center;">
+                            <div style="font-size:10px; color:var(--text-light); margin-bottom:2px;">지난주</div>
+                            <div class="compare-num" id="prev-score" style="font-size:22px;">40</div>
+                        </div>
+                        <div id="compare-arrow" style="font-family:'Jua',sans-serif; font-size:18px; color:var(--green);">↑ +20</div>
+                        <div style="text-align:center;">
+                            <div style="font-size:10px; color:var(--text-light); margin-bottom:2px;">이번주</div>
+                            <div class="compare-num" id="this-score" style="font-size:22px; color:var(--green);">60</div>
+                        </div>
                     </div>
+                    <div class="compare-sub" id="compare-sub">이번 주가 20점 올랐어요 📈</div>
                 </div>
             </div>
 
@@ -1239,9 +1230,9 @@
 
         function updateStats(area) {
             const d = areaData[area];
-            document.getElementById('area-title').textContent = `${area}에서는 연속훈련 D+${d.streak}`;
-            document.getElementById('training-area').textContent = area;
-            document.getElementById('training-badge').textContent = `연속훈련 D+${d.streak}`;
+            document.getElementById('area-title').textContent = area;
+            document.getElementById('area-desc').textContent = `인지·집중 훈련 영역 · 연속훈련 🔥 D+${d.streak}`;
+            document.querySelector('.streak-num').textContent = `🔥 ${d.streak}`;
             document.getElementById('stat-complete').innerHTML = `${d.complete}<span>H</span>`;
             document.getElementById('stat-challenge').innerHTML = `${d.challenge}<span>H</span>`;
             document.getElementById('stat-play').innerHTML = `${d.play}<span>회</span>`;
@@ -1249,7 +1240,17 @@
             document.getElementById('bad-area').textContent = d.bad;
             document.getElementById('good-bar').style.width = d.goodPct + '%';
             document.getElementById('bad-bar').style.width = d.badPct + '%';
-            document.querySelector('.compare-num').textContent = `약 ${d.ratio}배`;
+            // 점수 비교
+            const diff = d.thisScore - d.prevScore;
+            document.getElementById('prev-score').textContent = d.prevScore;
+            document.getElementById('this-score').textContent = d.thisScore;
+            document.getElementById('this-score').style.color = diff >= 0 ? 'var(--green)' : 'var(--danger)';
+            const arrow = document.getElementById('compare-arrow');
+            arrow.textContent = diff >= 0 ? `↑ +${diff}` : `↓ ${diff}`;
+            arrow.style.color = diff >= 0 ? 'var(--green)' : 'var(--danger)';
+            document.getElementById('compare-sub').textContent = diff >= 0
+                ? `이번 주가 ${diff}점 올랐어요 📈`
+                : `이번 주가 ${Math.abs(diff)}점 내렸어요 📉`;
             buildChart(d.scores, d.prevScores);
         }
 
